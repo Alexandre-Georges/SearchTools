@@ -37,6 +37,18 @@
         {{content}}
     </script>
     <script type="application/javascript">
+        var source   = $('#pet-dynamic').html();
+        var template = Handlebars.compile(source);
+
+        Prismic.Api('https://pets-ageo.prismic.io/api', function (err, Api) {
+            Api.form('everything')
+                    .ref(Api.master())
+                    .query(Prismic.Predicates.at('document.tags', [ 'pet' ])).submit(function (err, response) {
+                        var context = { content: response.results[0].fragments['article.content'].value[0].text };
+                        $('#handlebars').append(template(context));
+                    }
+            );
+        });
         var tipuesearch = {
             pages: []
         };
