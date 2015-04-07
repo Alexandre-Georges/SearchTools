@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Pet</title>
+    <script type="application/javascript" src="js/jquery.min.js"></script>
+    <script type="application/javascript" src="js/handlebars-v3.0.0.js"></script>
+    <script type="application/javascript" src="js/prismic-configuration.js"></script>
+    <script type="application/javascript" src="js/prismic.io-1.0.28.min.js"></script>
+
+    <link rel="stylesheet" href="tipuesearch/tipuesearch.css">
+    <script src="tipuesearch/tipuesearch_set.js"></script>
+    <script src="tipuesearch/tipuesearch.js"></script>
+</head>
+<body>
+    <a href="cat.html">Cat</a>
+    <a href="dog.html">Dog</a>
+    <br /><br />
+    <form action="#">
+        <input type="text" name="q" id="tipue_search_input" autocomplete="off" required>
+    </form>
+    <br />
+    <span>Search results</span>
+    <div id="tipue_search_content"></div>
+
+    <h1>This website is designed to test searching tools.</h1>
+    <p>Generic blah blah about pets.</p>
+
+    <p>
+        A pet (or companion animal) is an animal kept primarily for a person's company or protection, as opposed to working animals, sport animals, livestock, and laboratory animals, which are kept primarily for performance, agricultural value, or research. The most popular pets are noted for their attractive appearances and their loyal or playful personalities.
+    </p>
+    <p>
+        Pets commonly provide their owners (or guardians[1]) physical and emotional benefits. Walking a dog can supply both the human and pet with exercise, fresh air, and social interaction. Pets can give companionship to elderly adults who do not have adequate social interaction with other people. There is a medically approved class of therapy animals, mostly dogs or cats, that are brought to visit confined humans. Pet therapy utilizes trained animals and handlers to achieve specific physical, social, cognitive, and emotional goals with patients.
+    </p>
+    <p id="handlebars"></p>
+    <script id="pet-dynamic" type="text/x-handlebars-template">
+        {{content}}
+    </script>
+    <script type="application/javascript">
+        var tipuesearch = {
+            pages: []
+        };
+        Prismic.Api('https://pets-ageo.prismic.io/api', function (err, Api) {
+            Api.form('everything')
+                .ref(Api.master())
+                .query().submit(function (err, response) {
+                    for (var resultIndex in response.results) {
+                        var result = response.results[resultIndex];
+                        var tags = '';
+                        for (var tagIndex in result.tags) {
+                            if (tagIndex > 0) {
+                                tags += '';
+                            }
+                            tags += result.tags[tagIndex];
+                        }
+                        var urlParts = $(location)[0].href.split('/');
+                        tipuesearch.pages.push({
+                            title: result.fragments['article.title'].value[0].text,
+                            text: result.fragments['article.content'].value[0].text,
+                            tags: tags,
+                            loc: urlParts.slice(0, urlParts.length - 1).join('/') + '/' + result.fragments['article.path'].value
+                        });
+                    }
+
+                    $('#tipue_search_input').tipuesearch();
+                }
+            );
+        });
+    </script>
+</body>
+</html>
