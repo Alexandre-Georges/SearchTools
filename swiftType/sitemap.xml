@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>http://ec2-23-22-228-12.compute-1.amazonaws.com:4003/</loc>
+    </url>
+    <url>
+        <loc>http://ec2-23-22-228-12.compute-1.amazonaws.com:4003/dog.html</loc>
+    </url>
+    <url>
+        <loc>http://ec2-23-22-228-12.compute-1.amazonaws.com:4003/cat.html</loc>
+    </url>
+</urlset>
