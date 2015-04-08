@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo python -m SimpleHTTPServer 4003
+sudo python -m SimpleHTTPServer 80
